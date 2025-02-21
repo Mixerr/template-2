@@ -1,48 +1,91 @@
-import Link from "next/link";
+'use client'
+
+import { useLanguage } from '@/lib/contexts/LanguageContext'
+import { useAuth } from '@/lib/hooks/useAuth'
+import Link from 'next/link'
+import SignIn from '@/components/SignIn'
 
 export default function Home() {
+  const { t } = useLanguage()
+  const { user } = useAuth()
+
+  const featuredModules = [
+    {
+      id: 'stoicism',
+      title: 'Stoicism',
+      description: 'Learn about inner peace and self-control',
+      image: '/images/stoicism.jpg',
+    },
+    {
+      id: 'ethics',
+      title: 'Ethics',
+      description: 'Explore right and wrong through fun activities',
+      image: '/images/ethics.jpg',
+    },
+    {
+      id: 'logic',
+      title: 'Logic',
+      description: 'Discover how to think clearly and solve puzzles',
+      image: '/images/logic.jpg',
+    },
+  ]
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-center border p-4 font-mono rounded-md">
-          Get started by choosing a template path from the /paths/ folder.
-        </h2>
-      </div>
-      <div>
-        <h1 className="text-6xl font-bold text-center">Make anything you imagine 🪄</h1>
-        <h2 className="text-2xl text-center font-light text-gray-500 pt-4">
-          This whole page will be replaced when you run your template path.
-        </h2>
-      </div>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="border rounded-lg p-6 hover:bg-gray-100 transition-colors">
-          <h3 className="text-xl font-semibold">AI Chat App</h3>
-          <p className="mt-2 text-sm text-gray-600">
-            An intelligent conversational app powered by AI models, featuring real-time responses
-            and seamless integration with Next.js and various AI providers.
+    <div className="space-y-12">
+      {/* Hero Section */}
+      <section className="text-center py-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+        <div className="max-w-4xl mx-auto px-4">
+          <h1 className="text-4xl font-bold mb-4 text-white">{t('welcome.title')}</h1>
+          <p className="text-xl mb-8 text-white">{t('welcome.description')}</p>
+          {!user && (
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+              <SignIn />
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Featured Modules */}
+      <section>
+        <h2 className="text-2xl font-bold mb-6">Featured Philosophy Modules</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {featuredModules.map((module) => (
+            <Link
+              key={module.id}
+              href={`/modules/${module.id}`}
+              className="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+            >
+              <div className="aspect-video bg-gray-200 rounded-md mb-4">
+                {/* Image placeholder */}
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{module.title}</h3>
+              <p className="text-gray-600">{module.description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-xl font-semibold mb-3">Interactive Learning</h3>
+          <p className="text-gray-600">
+            Engage with philosophy through fun activities and games
           </p>
         </div>
-        <div className="border rounded-lg p-6 hover:bg-gray-100 transition-colors">
-          <h3 className="text-xl font-semibold">AI Image Generation App</h3>
-          <p className="mt-2 text-sm text-gray-600">
-            Create images from text prompts using AI, powered by the Replicate API and Next.js.
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-xl font-semibold mb-3">Track Progress</h3>
+          <p className="text-gray-600">
+            Follow your learning journey with achievements and milestones
           </p>
         </div>
-        <div className="border rounded-lg p-6 hover:bg-gray-100 transition-colors">
-          <h3 className="text-xl font-semibold">Social Media App</h3>
-          <p className="mt-2 text-sm text-gray-600">
-            A feature-rich social platform with user profiles, posts, and interactions using
-            Firebase and Next.js.
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-xl font-semibold mb-3">Parent Dashboard</h3>
+          <p className="text-gray-600">
+            Monitor and guide your child's philosophical exploration
           </p>
         </div>
-        <div className="border rounded-lg p-6 hover:bg-gray-100 transition-colors">
-          <h3 className="text-xl font-semibold">Voice Notes App</h3>
-          <p className="mt-2 text-sm text-gray-600">
-            A voice-based note-taking app with real-time transcription using Deepgram API, 
-            Firebase integration for storage, and a clean, simple interface built with Next.js.
-          </p>
-        </div>
-      </div>
-    </main>
-  );
+      </section>
+    </div>
+  )
 }
